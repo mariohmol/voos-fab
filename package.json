@@ -1,0 +1,24 @@
+{
+  "name": "voo-fab",
+  "version": "1.0.0",
+  "description": "Pra variar os dados abertos do governo sao em pdf.. scrap pra converter em json",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "supervisor": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://mariohmol@github.com/mariohmol/voos-fab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariohmol/voos-fab/issues"
+  },
+  "homepage": "https://github.com/mariohmol/voos-fab#readme"
+}
