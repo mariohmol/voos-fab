@@ -6,5 +6,9 @@ Passos:
 
 * Instale o NPM
 * Abre a pasta do projeto e execute `npm install`
-* Execute com `supervisor .`
+* Execute com `supervisor .
 
+TODO:
+
+* Testado com pdf2json mas muito complexo pra ler
+* Testado com pdftotext, necessário `brew install xpdf`

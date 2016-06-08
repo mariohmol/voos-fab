@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html class=''>
+<head>
+
+
+    <meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="canonical" href="http://codepen.io/mariomol/pen/vGNQaV" />
+
+
+<style class="cp-pen-styles"></style>
+</head>
+<body>
+    
+<div ng-app="d3plusApp">
+  
+  <div    ng-controller="ExamplesController">
+
+  <h1>Voos App</h1>
+
+    <div style="height: 400px"> 
+
+      <d3plus-bar data="base_data" id='name' x="year" y="value" size="value" 
+                  ng-show="charttype=='bar'"></d3plus-bar>
+
+      <d3plus-bubbles data="bubbles_data" id='["group", "name"]' size="value" color="group" ng-show="charttype=='bubbles'" depth="1" ></d3plus-bubbles>
+
+      <d3plus-box data="base_data" id='name' y="value" x="year" ng-show="charttype=='box'" ></d3plus-box>
+
+      <d3plus-line data="base_data" id='name' text='name'  x="year" y="value"  ng-show="charttype=='line'"></d3plus-line>
+
+      <d3plus-network data="network_data" nodes="network_positions" edges="network_connections" id="name"
+                      size="size"  ng-show="charttype=='network'"></d3plus-network>
+
+      <d3plus-pie data="sample_data" id='["name", "skill"]' size="value"  ng-show="charttype=='pie'"></d3plus-pie>
+
+      <d3plus-radar data="sample_data" id='["name", "skill"]' size="value"  ng-show="charttype=='radar'"></d3plus-radar>
+
+      <d3plus-rings data="sample_data" edges="rings_edges" focus="alpha" ng-show="charttype=='rings'"></d3plus-rings> 
+
+      <d3plus-scatter data="scatter_data" id='type' size="value"  x="value" y="weight" ng-show="charttype=='scatter'"></d3plus-scatter>
+
+      <d3plus-stacked data="base_data" id='name' text='name' x="year" y="value"  ng-show="charttype=='stacked'"></d3plus-stacked>
+
+      <d3plus-treemap data="sample_data" id='name' size="value"  ng-show="charttype=='treemap'"></d3plus-treemap>
+
+    </div>
+  </div>
+</div>
+
+<script src='http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js'></script>
+<script src='http://www.d3plus.org/js/d3.js'></script>
+<script src='http://www.d3plus.org/js/d3plus.js'></script>
+<script src='https://rawgithub.com/mariohmol/angular-d3plus/master/src/angular-d3plus.js'></script>
+<script src='http://www.d3plus.org/js/topojson.js'></script>
+
+<script>var app = angular.module('d3plusApp', ['angular-d3plus']);
+app.controller('ExamplesController', function ($scope) {
+    $scope.charttype = 'bar';
+    
+});
+</script>
+</body></html>

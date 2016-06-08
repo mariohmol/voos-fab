@@ -4,7 +4,12 @@
   "description": "Pra variar os dados abertos do governo sao em pdf.. scrap pra converter em json",
   "main": "main.js",
   "dependencies": {
+    "csv-write-stream": "^2.0.0",
+    "ejs": "^2.4.2",
     "express": "^4.13.4",
+    "pdf-to-text": "0.0.6",
+    "pdf2json": "^1.1.5",
+    "pdf2table": "0.0.1",
     "supervisor": "^0.11.0"
   },
   "devDependencies": {},
