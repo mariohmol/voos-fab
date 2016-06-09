@@ -112,7 +112,7 @@ app.controller('ExamplesController', function ($scope) {
       $scope.$broadcast("DataReady",{elementid: "mypie", data: $scope.voosdata});
     }
 
-    var retorno = d3.csv("/public/raw.csv")
+    var retorno = d3.csv("public/raw.csv")
     .row(function(d) { 
       d.count=1;
 
