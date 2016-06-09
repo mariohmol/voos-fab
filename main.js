@@ -104,20 +104,6 @@ var getFiles = function (dir, files_){
 
 Depois do arquivo  raw.cs salvo, adicionar na primeira linha
 Orgao,Origem,Saida,Destino,Chegada,Tipo,id
-
-
-E depois replace all de:
-
- ,Interino
-
- Por 
-  Interino
-
-
-  ,em Exercício
-  Por 
-  em Exercício
-
 */
 
 var readPDF = function(files,index){
