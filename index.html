@@ -13,35 +13,47 @@
     
 <div ng-app="d3plusApp">
   
-  <div ng-controller="ExamplesController">
+  <div    ng-controller="ExamplesController">
 
-  <h1>Voos FAB</h1>
-
+  <h1>Voos App</h1>
+  <h2>Está um pouco lento, portanto espere um pouco até baixar tudo</h2>
     <div style="height: 400px"> 
+      <h2>Filtros</h2>
+      <h3>Localidade</h3>
+       <select ng-model="localidade" ng-change="filtrar()">
+          <option ng-repeat="operator in localidades"
+                  value="{{operator}}">
+            {{operator}}
+          </option>
+      </select>
 
-      <d3plus-bar elementid="mybar" data="voosdata" id='Orgao' x="Saida" y="count" size="count" ng-if="show"></d3plus-bar>
+      <h3>Cargo</h3>
+       <select ng-model="cargo" ng-change="filtrar()">
+          <option ng-repeat="operator in orgaos"
+                  value="{{operator}}">
+            {{operator}}
+          </option>
+      </select>
 
-    
-      <d3plus-pie elementid="mypie" data="voosdata" id='id' size="count" ng-if="show"></d3plus-pie>
 
+      <h2>Por Cargo</h2>
+      <d3plus-treemap elementid="mypie" data="voosdata" id='Orgao' size="count" ng-if="show" ></d3plus-treemap>
+
+      <h2>Por Localidade Origem</h2>
+      <d3plus-treemap elementid="mypie" data="voosdata" id='Origem' size="count" ng-if="show" ></d3plus-treemap>
+
+      <h2>Por Localidade Destino</h2>
+      <d3plus-treemap elementid="mypie" data="voosdata" id='Destino' size="count" ng-if="show" ></d3plus-treemap>
+
+      <hr/>
+
+     
       <!--
 
-      <d3plus-bubbles data="bubbles_data" id='["group", "name"]' size="value" color="group" ng-show="charttype=='bubbles'" depth="1" ></d3plus-bubbles>
+ <h2>Durante o tempo</h2>
+      <d3plus-stacked elementid="mypie" id='Orgao' text='Orgao' x="SaidaDate" y="count" ng-if="show" ></d3plus-stacked>
+      
 
-      <d3plus-box data="base_data" id='name' y="value" x="year" ng-show="charttype=='box'" ></d3plus-box>
-
-      <d3plus-line data="base_data" id='name' text='name'  x="year" y="value"  ng-show="charttype=='line'"></d3plus-line>
-
-
-      <d3plus-radar data="sample_data" id='["name", "skill"]' size="value"  ng-show="charttype=='radar'"></d3plus-radar>
-
-      <d3plus-rings data="sample_data" edges="rings_edges" focus="alpha" ng-show="charttype=='rings'"></d3plus-rings> 
-
-      <d3plus-scatter data="scatter_data" id='type' size="value"  x="value" y="weight" ng-show="charttype=='scatter'"></d3plus-scatter>
-
-      <d3plus-stacked data="base_data" id='name' text='name' x="year" y="value"  ng-show="charttype=='stacked'"></d3plus-stacked>
-
-      <d3plus-treemap data="sample_data" id='name' size="value"  ng-show="charttype=='treemap'"></d3plus-treemap>
     -->
 
     </div>
@@ -58,22 +70,68 @@
 <script>
 var finalrows;
 var app = angular.module('d3plusApp', ['angular-d3plus']);
+
 app.controller('ExamplesController', function ($scope) {
     $scope.charttype = 'bar';
     $scope.voosdata =[];
+    $scope.orgaos={};
+    $scope.localidades={};
+    $scope.cargo=null;
+    $scope.localidade=null;
+    $scope.original =null;
     $scope.show=true;
     //$scope.data = [];
 
-    var retorno = d3.csv("public/raw.csv")
-    .row(function(d) { 
-      d.count=1;
-      return d; 
-    })
-    .get(function(error, rows) { 
-      $scope.voosdata = $scope.voosdata.concat(rows[1]);
-      console.log($scope.voosdata);
+    $scope.toDate = function(data){
+      try{
+        data=data.split(" ");
+        dias=data[0].split("/");
+        return new Date(dias[2], dias[1] , dias[0]);
+      }catch(e){return null}
+    }
+
+    $scope.toMonthDate = function(data){
+      try{
+        data=data.split(" ");
+        dias=data[0].split("/");
+        return  "20" + dias[0] + "/" + dias[1];
+      }catch(e){return null}
+    }
+
+    $scope.filtrar = function(){
+      $scope.voosdata =[];
+      $scope.original.forEach(function(index,val){
+          if($scope.orgao!=null && $scope.orgao!=val.Orgao) return;
+          if($scope.localidade!=null && $scope.localidade!=val.Origem && $scope.localidade!=val.Destino) return;
+          $scope.voosdata.push(val);
+
+      });
+
       $scope.$broadcast("DataReady",{elementid: "mybar", data: $scope.voosdata});
       $scope.$broadcast("DataReady",{elementid: "mypie", data: $scope.voosdata});
+    }
+
+    var retorno = d3.csv("/public/raw.csv")
+    .row(function(d) { 
+      d.count=1;
+
+      d.Orgao=d.Orgao.split("(")[0];
+      d.SaidaDate = $scope.toDate(d.Saida);
+      d.ChegadaDate = $scope.toDate(d.Chegada);
+
+      d.SaidaMonth = $scope.toMonthDate(d.Saida);
+      d.ChegadaMonth = $scope.toMonthDate(d.Saida);
+
+      $scope.orgaos[d.Orgao]=d.Orgao;
+      $scope.localidades[d.Origem]=d.Origem;
+      $scope.localidades[d.Destino]=d.Destino;
+      //console.log(d);
+      return d; 
+    })
+
+    .get(function(error, rows) { 
+      $scope.original = rows;
+      $scope.filtrar();
       $scope.show=true;
     });
 
