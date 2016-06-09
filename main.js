@@ -113,6 +113,11 @@ E depois replace all de:
  Por 
   Interino
 
+
+  ,em Exercício
+  Por 
+  em Exercício
+
 */
 
 var readPDF = function(files,index){
