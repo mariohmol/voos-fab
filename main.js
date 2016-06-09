@@ -100,6 +100,21 @@ var getFiles = function (dir, files_){
     }
     return files_;
 }
+/*
+
+Depois do arquivo  raw.cs salvo, adicionar na primeira linha
+Orgao,Origem,Saida,Destino,Chegada,Tipo,id
+
+
+E depois replace all de:
+
+ ,Interino
+
+ Por 
+  Interino
+
+*/
+
 var readPDF = function(files,index){
 
 	if(resultadofinal ==null) resultadofinal = [];
@@ -108,11 +123,19 @@ var readPDF = function(files,index){
 
 		var headers = ["AUTORIDADES APOIADAS","ORIGEM","DECOLAGEM","DESTINO","POUSO","MOTIVO","PREVISÃO DE","(H. LOCAL)","DESTINO"
 		,"POUSO","(H. LOCAL)","MOTIVO","PREVISÃO DE","PASSAGEIROS"];
-		var writer = csvWriter({ headers: headers});
-		writer.pipe(fs.createWriteStream("./raw.csv"))
+		var writer = csvWriter({ headers: headers,separator: ','});
+		writer.pipe(fs.createWriteStream("./public/raw.csv"))
 		resultadofinal.forEach(function(valpdf,index){
 			valpdf.forEach(function(val,indexval){
-				if(val.length>5 && val[0].trim()!= "AUTORIDADES APOIADAS" && val[1].trim()!= "AUTORIDADES APOIADAS" ) writer.write(val);
+
+				
+
+				if(val.length>5 && val[0].trim()!= "AUTORIDADES APOIADAS" && val[1].trim()!= "AUTORIDADES APOIADAS" ) {
+					for(i=0;i<val.length;i++){
+						val[i]=val[i].replace(",","");
+					};
+					writer.write(val);
+				}
 				console.log(val,val.length);
 			});
 				

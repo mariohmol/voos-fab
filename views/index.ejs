@@ -24,21 +24,16 @@
     <div style="height: 400px"> 
       <h2>Filtros</h2>
       <h3>Localidade</h3>
-       <select ng-model="localidade" ng-change="filtrar(localidade,cargo)">
-          <option ng-repeat="operator in localidades"
-                  value="{{operator}}">
-            {{operator}}
-          </option>
+      <select ng-model="localidade" ng-options="key for key in finallocalidades | orderBy"
+        ng-change="filtrar(localidade,cargo)" ng-if="show">
       </select>
 
       <h3>Cargo</h3>
-       <select ng-model="cargo" ng-change="filtrar(localidade,cargo)">
-          <option ng-repeat="operator in orgaos"
-                  value="{{operator}}">
-            {{operator}}
-          </option>
+       <select ng-model="cargo" ng-options="key for key in finalorgaos | orderBy"
+        ng-change="filtrar(localidade,cargo)" ng-if="show">
       </select>
 
+      
 
       <h2>Por Cargo</h2>
       <d3plus-treemap elementid="mypie" data="voosdata" id='Orgao' size="count" ng-if="show" ></d3plus-treemap>
@@ -80,10 +75,16 @@ app.controller('ExamplesController', function ($scope) {
     $scope.voosdata =[];
     $scope.orgaos={};
     $scope.localidades={};
-    $scope.cargo=null;
-    $scope.localidade=null;
+
+    $scope.finalorgaos=[];
+    $scope.finallocalidades=[];
+
+    $scope.cargo={};
+    $scope.localidade={};
     $scope.original =null;
     $scope.show=true;
+
+    $scope.identity = angular.identity;
     //$scope.data = [];
 
     $scope.toDate = function(data){
@@ -106,6 +107,7 @@ app.controller('ExamplesController', function ($scope) {
       $scope.localidade=localidade;
       $scope.orgao=cargo;
       $scope.voosdata =[];
+      if(!$scope.original) return;
       $scope.original.forEach(function(val,index){
           if($scope.orgao!=null && $scope.orgao!=val.Orgao) return;
           if($scope.localidade!=null && $scope.localidade!=val.Origem && $scope.localidade!=val.Destino) return;
@@ -119,8 +121,9 @@ app.controller('ExamplesController', function ($scope) {
     var retorno = d3.csv("public/raw.csv")
     .row(function(d) { 
       d.count=1;
-
+      
       d.Orgao=d.Orgao.split("(")[0];
+      d.Orgao =d.Orgao.replace('"').replace('"').trim();
       d.SaidaDate = $scope.toDate(d.Saida);
       d.ChegadaDate = $scope.toDate(d.Chegada);
 
@@ -134,7 +137,25 @@ app.controller('ExamplesController', function ($scope) {
       return d; 
     })
 
-    .get(function(error, rows) { 
+    .get(function(error, rows) {
+      Object.keys($scope.orgaos).sort(function(a, b) {
+        return a > b
+      });
+      Object.keys($scope.localidades).sort(function(a, b) {
+        return a > b
+      });
+
+      finalorgaos =[];
+      for(val in $scope.orgaos){
+          finalorgaos.push(val);
+      };
+      $scope.finalorgaos =finalorgaos;
+
+      $scope.finallocalidades=[];
+      for(val in $scope.localidades){
+          $scope.finallocalidades.push(val);
+      };
+
       $scope.original = rows;
       $scope.filtrar();
       $scope.show=true;
