@@ -64,7 +64,7 @@ app.controller('ExamplesController', function ($scope) {
     $scope.show=true;
     //$scope.data = [];
 
-    var retorno = d3.csv("/public/raw.csv")
+    var retorno = d3.csv("public/raw.csv")
     .row(function(d) { 
       d.count=1;
       return d; 
