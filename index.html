@@ -36,7 +36,7 @@
       
 
       <h2>Por Cargo</h2>
-      <d3plus-treemap elementid="mypie" data="voosdata" id='Orgao' size="count" ng-if="show" ></d3plus-treemap>
+      <d3plus-treemap elementid="mypie" data="voosdata" id='["Orgao","SaidaDate"]' size="count" ng-if="show" ></d3plus-treemap>
 
       <h2>Por Localidade Origem</h2>
       <d3plus-treemap elementid="mypie" data="voosdata" id='["Origem","SaidaDate"]' size="count" ng-if="show" ></d3plus-treemap>
@@ -122,8 +122,9 @@ app.controller('ExamplesController', function ($scope) {
     .row(function(d) { 
       d.count=1;
       
-      d.Orgao=d.Orgao.split("(")[0];
-      d.Orgao =d.Orgao.replace('"').replace('"').trim();
+      d.Orgao=d.Orgao.split("(")[0].trim().toLowerCase();
+      d.Orgao =d.Orgao.replace('"',"").replace('"',"").replace('-'," ").replace(",interino"," interino").replace(",em exercício"," em exercício").replace(" do gab "," do gabinete ");
+      
       d.SaidaDate = $scope.toDate(d.Saida);
       d.ChegadaDate = $scope.toDate(d.Chegada);
 
