@@ -20,7 +20,7 @@
     <div style="height: 400px"> 
       <h2>Filtros</h2>
       <h3>Localidade</h3>
-       <select ng-model="localidade" ng-change="filtrar()">
+       <select ng-model="localidade" ng-change="filtrar(localidade,cargo)">
           <option ng-repeat="operator in localidades"
                   value="{{operator}}">
             {{operator}}
@@ -28,7 +28,7 @@
       </select>
 
       <h3>Cargo</h3>
-       <select ng-model="cargo" ng-change="filtrar()">
+       <select ng-model="cargo" ng-change="filtrar(localidade,cargo)">
           <option ng-repeat="operator in orgaos"
                   value="{{operator}}">
             {{operator}}
@@ -40,10 +40,10 @@
       <d3plus-treemap elementid="mypie" data="voosdata" id='Orgao' size="count" ng-if="show" ></d3plus-treemap>
 
       <h2>Por Localidade Origem</h2>
-      <d3plus-treemap elementid="mypie" data="voosdata" id='Origem' size="count" ng-if="show" ></d3plus-treemap>
+      <d3plus-treemap elementid="mypie" data="voosdata" id='["Origem","SaidaDate"]' size="count" ng-if="show" ></d3plus-treemap>
 
       <h2>Por Localidade Destino</h2>
-      <d3plus-treemap elementid="mypie" data="voosdata" id='Destino' size="count" ng-if="show" ></d3plus-treemap>
+      <d3plus-treemap elementid="mypie" data="voosdata" id='["Destino","SaidaDate"]' size="count" ng-if="show" ></d3plus-treemap>
 
       <hr/>
 
@@ -98,13 +98,14 @@ app.controller('ExamplesController', function ($scope) {
       }catch(e){return null}
     }
 
-    $scope.filtrar = function(){
+    $scope.filtrar = function(localidade,cargo){
+      $scope.localidade=localidade;
+      $scope.orgao=cargo;
       $scope.voosdata =[];
-      $scope.original.forEach(function(index,val){
+      $scope.original.forEach(function(val,index){
           if($scope.orgao!=null && $scope.orgao!=val.Orgao) return;
           if($scope.localidade!=null && $scope.localidade!=val.Origem && $scope.localidade!=val.Destino) return;
           $scope.voosdata.push(val);
-
       });
 
       $scope.$broadcast("DataReady",{elementid: "mybar", data: $scope.voosdata});
