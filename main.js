@@ -6,13 +6,16 @@ var cheerio = require('cheerio');
 var PDFParser = require("pdf2json/PDFParser");
 var pdfUtil = require('pdf-to-text');
 var pdf2table = require('pdf2table');
-var csvWriter = require('csv-write-stream')
+var csvWriter = require('csv-write-stream');
+
 
 
 
 var app     = express();
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+app.use(express.static('public'));
+app.use('/public', express.static('public'));
 
 
 var datapage = "./data/page.html";

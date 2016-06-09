@@ -19,8 +19,12 @@
 
     <div style="height: 400px"> 
 
-      <d3plus-bar data="base_data" id='name' x="year" y="value" size="value" 
-                  ng-show="charttype=='bar'"></d3plus-bar>
+      <d3plus-bar elementid="mybar" data="voosdata" id='Orgao' x="Saida" y="count" size="count" ng-if="show"></d3plus-bar>
+
+    
+      <d3plus-pie elementid="mypie" data="voosdata" id='id' size="count" ng-if="show"></d3plus-pie>
+
+      <!--
 
       <d3plus-bubbles data="bubbles_data" id='["group", "name"]' size="value" color="group" ng-show="charttype=='bubbles'" depth="1" ></d3plus-bubbles>
 
@@ -28,10 +32,6 @@
 
       <d3plus-line data="base_data" id='name' text='name'  x="year" y="value"  ng-show="charttype=='line'"></d3plus-line>
 
-      <d3plus-network data="network_data" nodes="network_positions" edges="network_connections" id="name"
-                      size="size"  ng-show="charttype=='network'"></d3plus-network>
-
-      <d3plus-pie data="sample_data" id='["name", "skill"]' size="value"  ng-show="charttype=='pie'"></d3plus-pie>
 
       <d3plus-radar data="sample_data" id='["name", "skill"]' size="value"  ng-show="charttype=='radar'"></d3plus-radar>
 
@@ -42,6 +42,7 @@
       <d3plus-stacked data="base_data" id='name' text='name' x="year" y="value"  ng-show="charttype=='stacked'"></d3plus-stacked>
 
       <d3plus-treemap data="sample_data" id='name' size="value"  ng-show="charttype=='treemap'"></d3plus-treemap>
+    -->
 
     </div>
   </div>
@@ -53,10 +54,38 @@
 <script src='https://rawgithub.com/mariohmol/angular-d3plus/master/src/angular-d3plus.js'></script>
 <script src='http://www.d3plus.org/js/topojson.js'></script>
 
-<script>var app = angular.module('d3plusApp', ['angular-d3plus']);
+
+<script>
+var finalrows;
+var app = angular.module('d3plusApp', ['angular-d3plus']);
 app.controller('ExamplesController', function ($scope) {
     $scope.charttype = 'bar';
-    
+    $scope.voosdata =[];
+    $scope.show=true;
+    //$scope.data = [];
+
+    var retorno = d3.csv("/public/raw.csv")
+    .row(function(d) { 
+      d.count=1;
+      return d; 
+    })
+    .get(function(error, rows) { 
+      $scope.voosdata = $scope.voosdata.concat(rows[1]);
+      console.log($scope.voosdata);
+      $scope.$broadcast("DataReady",{elementid: "mybar", data: $scope.voosdata});
+      $scope.$broadcast("DataReady",{elementid: "mypie", data: $scope.voosdata});
+      $scope.show=true;
+    });
+
 });
 </script>
+
+
+<script>
+
+ 
+</script>
+
+
+
 </body></html>
