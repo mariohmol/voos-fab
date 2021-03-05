@@ -10,7 +10,7 @@
     "pdf-to-text": "0.0.6",
     "pdf2json": "^1.1.5",
     "pdf2table": "0.0.1",
-    "supervisor": "^0.11.0"
+    "supervisor": "^0.12.0"
   },
   "devDependencies": {},
   "scripts": {
