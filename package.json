@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "csv-write-stream": "^2.0.0",
-    "ejs": "^2.4.2",
+    "ejs": "^3.1.7",
     "express": "^4.13.4",
     "pdf-to-text": "0.0.6",
     "pdf2json": "^1.1.5",
